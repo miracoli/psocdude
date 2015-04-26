@@ -37,7 +37,7 @@
 #define EM_AVR32 0x18ad         /* inofficial */
 #endif
 
-#include "avrdude.h"
+#include "psocdude.h"
 #include "avr.h"
 #include "fileio.h"
 

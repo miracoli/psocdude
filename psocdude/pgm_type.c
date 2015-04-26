@@ -25,7 +25,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "avrdude.h"
+#include "psocdude.h"
 #include "pgm_type.h"
 
 #include "arduino.h"

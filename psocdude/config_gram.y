@@ -26,7 +26,7 @@
 #include <string.h>
 #include <math.h>
 
-#include "avrdude.h"
+#include "psocdude.h"
 
 #include "config.h"
 #include "lists.h"

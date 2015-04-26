@@ -42,7 +42,7 @@
 #include <termios.h>
 #include <unistd.h>
 
-#include "avrdude.h"
+#include "psocdude.h"
 #include "serial.h"
 
 long serial_recv_timeout = 5000; /* ms */

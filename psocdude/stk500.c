@@ -36,7 +36,7 @@
 #include <errno.h>
 #include <unistd.h>
 
-#include "avrdude.h"
+#include "psocdude.h"
 #include "avr.h"
 #include "pgm.h"
 #include "stk500.h"

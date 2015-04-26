@@ -28,7 +28,7 @@
 #include <sys/time.h>
 #include <time.h>
 
-#include "avrdude.h"
+#include "psocdude.h"
 
 #include "avr.h"
 #include "lists.h"

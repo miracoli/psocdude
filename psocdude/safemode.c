@@ -22,7 +22,7 @@
 #include <stdio.h>
 
 #include "ac_cfg.h"
-#include "avrdude.h"
+#include "psocdude.h"
 #include "avr.h"
 #include "pgm.h"
 #include "safemode.h"

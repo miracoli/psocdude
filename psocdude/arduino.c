@@ -31,7 +31,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "avrdude.h"
+#include "psocdude.h"
 #include "pgm.h"
 #include "stk500_private.h"
 #include "stk500.h"
