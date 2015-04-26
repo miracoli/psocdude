@@ -657,14 +657,12 @@ part_parm :
     }
   } |
 
-  K_SIGNATURE TKN_EQUAL TKN_NUMBER TKN_NUMBER TKN_NUMBER {
+  K_SIGNATURE TKN_EQUAL TKN_NUMBER TKN_NUMBER {
     {
       current_part->signature[0] = $3->value.number;
       current_part->signature[1] = $4->value.number;
-      current_part->signature[2] = $5->value.number;
       free_token($3);
       free_token($4);
-      free_token($5);
     }
   } |
 

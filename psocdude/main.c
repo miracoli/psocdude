@@ -1089,14 +1089,11 @@ int main(int argc, char * argv [])
         }
       }
 
-      if (sig->size != 3 ||
-          sig->buf[0] != p->signature[0] ||
-          sig->buf[1] != p->signature[1] ||
-          sig->buf[2] != p->signature[2]) {
+      if (sig->size != 2 || sig->buf[0] != p->signature[0] || sig->buf[1] != p->signature[1]) {
         fprintf(stderr,
-                "%s: Expected signature for %s is %02X %02X %02X\n",
+                "%s: Expected signature for %s is %02X %02X\n",
                 progname, p->desc,
-                p->signature[0], p->signature[1], p->signature[2]);
+                p->signature[0], p->signature[1]);
         if (!ovsigck) {
           fprintf(stderr, "%sDouble check chip, "
                   "or use -F to override this check.\n",
