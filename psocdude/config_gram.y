@@ -30,10 +30,6 @@
 
 #include "config.h"
 #include "lists.h"
-#include "par.h"
-#include "serbb.h"
-#include "pindefs.h"
-#include "ppi.h"
 #include "pgm.h"
 #include "pgm_type.h"
 #include "avr.h"

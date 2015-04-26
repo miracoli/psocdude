@@ -91,90 +91,36 @@ libavrdude_a_SOURCES = \
 	arduino.c \
 	avr.c \
 	avr.h \
-	avr910.c \
-	avr910.h \
 	avrdude.h \
-	avrftdi.c \
-	avrftdi.h \
-	avrftdi_private.h \
-	avrftdi_tpi.c \
-	avrftdi_tpi.h \
 	avrpart.c \
 	avrpart.h \
-	bitbang.c \
-	bitbang.h \
-	buspirate.c \
-	buspirate.h \
-	butterfly.c \
-	butterfly.h \
 	config.c \
 	config.h \
 	confwin.c \
 	confwin.h \
-	crc16.c \
-	crc16.h \
 	fileio.c \
 	fileio.h \
-	freebsd_ppi.h \
-	ft245r.c \
-	ft245r.h \
-	jtagmkI.c \
-	jtagmkI.h \
-	jtagmkI_private.h \
-	jtagmkII.c \
-	jtagmkII.h \
-	jtagmkII_private.h \
-	jtag3.c \
-	jtag3.h \
-	jtag3_private.h \
-	linuxgpio.c \
-	linuxgpio.h \
-	linux_ppdev.h \
 	lists.c \
 	lists.h \
-	my_ddk_hidsdi.h \
-	par.c \
-	par.h \
 	pgm.c \
 	pgm.h \
 	pgm_type.c \
 	pgm_type.h \
-	pickit2.c \
-	pickit2.h \
 	pindefs.c \
 	pindefs.h \
-	ppi.c \
-	ppi.h \
-	ppiwin.c \
 	safemode.c \
 	safemode.h \
 	serial.h \
-	serbb.h \
-	serbb_posix.c \
-	serbb_win32.c \
-	ser_avrdoper.c \
 	ser_posix.c \
 	ser_win32.c \
 	solaris_ecpp.h \
 	stk500.c \
 	stk500.h \
 	stk500_private.h \
-	stk500v2.c \
-	stk500v2.h \
-	stk500v2_private.h \
-	stk500generic.c \
-	stk500generic.h \
 	tpi.h \
-	usbasp.c \
-	usbasp.h \
 	usbdevs.h \
-	usb_libusb.c \
-	usbtiny.h \
-	usbtiny.c \
 	update.h \
-	update.c \
-	wiring.h \
-	wiring.c
+	update.c 
 
 avrdude_SOURCES = \
 	main.c \

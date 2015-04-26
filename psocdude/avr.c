@@ -33,7 +33,6 @@
 #include "avr.h"
 #include "lists.h"
 #include "pindefs.h"
-#include "ppi.h"
 #include "safemode.h"
 #include "update.h"
 #include "tpi.h"
