@@ -26,7 +26,7 @@
 #include <stdarg.h>
 #include <string.h>
 
-#include "avrdude.h"
+#include "psocdude.h"
 #include "avr.h"
 #include "config.h"
 #include "config_gram.h"

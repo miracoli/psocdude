@@ -25,7 +25,7 @@
 #include <string.h>
 #include <time.h>
 
-#include "avrdude.h"
+#include "psocdude.h"
 #include "avr.h"
 #include "config.h"
 #include "confwin.h"

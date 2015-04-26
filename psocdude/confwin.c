@@ -17,7 +17,7 @@
  */
 
 
-#include "avrdude.h"
+#include "psocdude.h"
 
 #if defined(WIN32NATIVE)
 

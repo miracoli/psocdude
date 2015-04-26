@@ -21,7 +21,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "avrdude.h"
+#include "psocdude.h"
 #include "pindefs.h"
 #include "pgm.h"
 

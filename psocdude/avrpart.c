@@ -23,7 +23,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "avrdude.h"
+#include "psocdude.h"
 #include "avrpart.h"
 #include "pindefs.h"
 

@@ -28,7 +28,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include "avrdude.h"
+#include "psocdude.h"
 
 #include "config.h"
 #include "config_gram.h"

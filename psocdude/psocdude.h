@@ -18,8 +18,8 @@
 
 /* $Id$ */
 
-#ifndef avrdude_h
-#define avrdude_h
+#ifndef psocdude_h
+#define psocdude_h
 
 extern char * progname;		/* name of program, for messages */
 extern char progbuf[];		/* spaces same length as progname */

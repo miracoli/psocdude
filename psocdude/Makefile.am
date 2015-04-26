@@ -91,7 +91,7 @@ libavrdude_a_SOURCES = \
 	arduino.c \
 	avr.c \
 	avr.h \
-	avrdude.h \
+	psocdude.h \
 	avrpart.c \
 	avrpart.h \
 	config.c \
