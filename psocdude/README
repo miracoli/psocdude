@@ -1,8 +1,8 @@
 See the documentation file for the details.
 
-The latest version of AVRDUDE is always available here:
+The latest version of PSoCDude is always available here:
 
-  http://savannah.nongnu.org/projects/avrdude
+  https://github.com/miracoli/psocdude
 
 
 Important environment variables for ./configure:
@@ -35,7 +35,7 @@ to make the linker search for "libusb.a" in that directory.
 Linux users: make sure the header files are installed
 =====================================================
 
-While many Linux distributions install the libraries needed by AVRDUDE
+While many Linux distributions install the libraries needed by PSoCDUDE
 (libusb, libelf) by default, they leave out the corresponding header
 files.  Consequently, the configure script won't find them, so these
 libraries could not be used.
