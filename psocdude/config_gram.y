@@ -160,6 +160,22 @@ static int pin_name;
 %token K_SYNCHCYCLES
 %token K_HVCMDEXEDELAY
 
+%token K_PROGRAMMING_MODE
+%token K_TARGET_VOLTAGE
+%token K_TARGET_VOLTAGE_5V
+%token K_TARGET_VOLTAGE_3_3V
+%token K_MULTI_BANK
+%token K_CHECKSUM_SETUP
+%token K_PROGRAM_BLOCK
+
+%token K_RESET_MODE
+%token K_POWER_CYCLE_MODE
+%token K_CHECKSUM_SETUP_21_23_27_TST110_TMG110
+%token K_CHECKSUM_SETUP_22_24_28_29_TST120_TMG120_TMA120
+%token K_CHECKSUM_SETUP_24_24A
+%token K_PROGRAM_BLOCK_21_22_23_24_28_29_TST_TMG_TMA
+%token K_PROGRAM_BLOCK_27
+
 %token K_CHIPERASEPULSEWIDTH
 %token K_CHIPERASEPOLLTIMEOUT
 %token K_CHIPERASETIME
@@ -497,6 +513,44 @@ prog_parm_conntype_id:
   K_USB             { current_prog->conntype = CONNTYPE_USB; }
 ;
 
+programming_mode:
+  K_PROGRAMMING_MODE TKN_EQUAL programming_mode_id
+;
+
+programming_mode_id:
+  K_RESET_MODE { current_part->prog_mode = RESET_MODE; } |
+  K_POWER_CYCLE_MODE { current_part->prog_mode  = POWER_CYCLE_MODE; }
+;
+
+checksum_setup:
+  K_CHECKSUM_SETUP TKN_EQUAL checksum_setup_id
+;
+
+checksum_setup_id:
+  K_CHECKSUM_SETUP_21_23_27_TST110_TMG110 { current_part->chksm_setup = CHECKSUM_SETUP_21_23_27_TST110_TMG110; } |
+  K_CHECKSUM_SETUP_22_24_28_29_TST120_TMG120_TMA120 { current_part->chksm_setup  = CHECKSUM_SETUP_22_24_28_29_TST120_TMG120_TMA120; } |
+  K_CHECKSUM_SETUP_24_24A { current_part->chksm_setup  = CHECKSUM_SETUP_24_24A; }
+;
+
+program_block:
+  K_PROGRAM_BLOCK TKN_EQUAL program_block_id
+;
+
+program_block_id:
+  K_PROGRAM_BLOCK_21_22_23_24_28_29_TST_TMG_TMA { current_part->prgm_block = PROGRAM_BLOCK_21_22_23_24_28_29_TST_TMG_TMA; } |
+  K_PROGRAM_BLOCK_27 { current_part->prgm_block  = PROGRAM_BLOCK_27; }
+;
+
+target_voltage:
+  K_TARGET_VOLTAGE TKN_EQUAL target_voltage_id
+;
+
+target_voltage_id:
+  K_TARGET_VOLTAGE_5V { current_part->targ_voltage = TARGET_VOLTAGE_5V; } |
+  K_TARGET_VOLTAGE_3_3V { current_part->targ_voltage  = TARGET_VOLTAGE_3_3V; }
+;
+
+
 prog_parm_usb:
   K_USBDEV TKN_EQUAL TKN_STRING {
     {
@@ -619,6 +673,19 @@ retry_lines :
 ;
 
 part_parm :
+  K_MULTI_BANK TKN_EQUAL yesno
+    {
+      current_part->multi_bank = $3->primary == K_YES ? 1 : 0;
+      free_token($3);
+    } |
+  target_voltage 
+  |
+  program_block
+  |
+  checksum_setup
+  |
+  programming_mode
+  |
   K_ID TKN_EQUAL TKN_STRING 
     {
       strncpy(current_part->id, $3->value.string, AVR_IDLEN);

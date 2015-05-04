@@ -66,6 +66,27 @@ enum ctl_stack_t {
   CTL_STACK_HVSP      /* high voltage serial programming control stack */
 };
 
+enum checksum_setup {
+  CHECKSUM_SETUP_21_23_27_TST110_TMG110, // CY8C21x23, CY8C21x34, CY8C23x33, CY8C27x43, TST110 & TMG110 Checksum Setup Vectors
+  CHECKSUM_SETUP_22_24_28_29_TST120_TMG120_TMA120, // CY8C21x45,CY8C22x45,CY8C24x94, CY8C28xxx, CY8C29x66, TST120, TMG120, & TMA120 Checksum Setup Vectors
+  CHECKSUM_SETUP_24_24A // CY8C24x23 & CY8C24x23A Checksum Setup Vectors
+};
+
+enum prg_block {
+  PROGRAM_BLOCK_21_22_23_24_28_29_TST_TMG_TMA, // CY8C21xxx, CY8C21x45, CY8C22x45, CY8C23x33, CY8C24x23A, CY8C24x94, CY8C28xxx, CY8C29x66, TST1x0, TMG1x0, & TMA120 Program Block Vectors 
+  PROGRAM_BLOCK_27 //  CY8C27x43 Program Block Vectors
+};
+
+enum target_voltage {
+  TARGET_VOLTAGE_5V,
+  TARGET_VOLTAGE_3_3V,
+};
+
+enum programming_mode {
+    RESET_MODE,
+    POWER_CYCLE_MODE,
+};
+
 /*
  * serial programming instruction bit specifications
  */
@@ -126,6 +147,12 @@ typedef struct avrpart {
   int           predelay;           /* stk500 v2 xml file parameter */
   int           postdelay;          /* stk500 v2 xml file parameter */
   int           pollmethod;         /* stk500 v2 xml file parameter */
+
+  enum programming_mode prog_mode;
+  enum target_voltage targ_voltage;
+  char multi_bank;
+  enum checksum_setup chksm_setup;
+  enum prg_block prgm_block;
 
   enum ctl_stack_t ctl_stack_type;  /* what to use the ctl stack for */
   unsigned char controlstack[CTL_STACK_SIZE]; /* stk500v2 PP/HVSP ctl stack */
