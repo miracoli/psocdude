@@ -1,6 +1,9 @@
 #
-# avrdude - A Downloader/Uploader for AVR device programmers
-# Copyright (C) 2003, 2004  Theodore A. Roth  <troth@openavr.org>
+# psocdude - A Downloader/Uploader for PSoC device programmers
+# Copyright (C) 2015  Dirk Petrautzki <dirk@dirk-petrautzki.de>
+# 
+# Derived from avrdude code which is under copyright 
+# of the respective programmer (see AUTHORS_AVRDUDE)
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -23,7 +26,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.60)
-AC_INIT(avrdude, 6.0.1, avrdude-dev@nongnu.org)
+AC_INIT(psocdude, 0.9.0, dirk@dirk-petrautzki.de)
 
 AC_CANONICAL_BUILD
 AC_CANONICAL_HOST
@@ -259,9 +262,9 @@ AC_ARG_ENABLE(
 	[versioned_doc=yes])
 
 if test "$versioned_doc" = "yes"; then
-    DOC_INST_DIR='$(DESTDIR)$(datadir)/doc/avrdude-$(VERSION)'
+    DOC_INST_DIR='$(DESTDIR)$(datadir)/doc/psocdude-$(VERSION)'
 else
-    DOC_INST_DIR='$(DESTDIR)$(datadir)/doc/avrdude'
+    DOC_INST_DIR='$(DESTDIR)$(datadir)/doc/psocdude'
 fi
 
 AC_ARG_ENABLE(
@@ -460,15 +463,15 @@ AC_CONFIG_FILES([
        Makefile
 ])
 
-# The procedure to create avrdude.conf involves two steps.  First,
+# The procedure to create psocdude.conf involves two steps.  First,
 # normal autoconf substitution will be applied, resulting in
-# avrdude.conf.tmp.  Finally, a sed command will be applied to filter
+# psocdude.conf.tmp.  Finally, a sed command will be applied to filter
 # out unwanted parts (currently the parallel port programmer types)
 # based on previous configuration results, thereby producing the final
-# avrdude.conf file.
+# psocdude.conf file.
 
-AC_CONFIG_FILES([avrdude.conf.tmp:avrdude.conf.in],
-		[sed $confsubst avrdude.conf.tmp > avrdude.conf],
+AC_CONFIG_FILES([psocdude.conf.tmp:psocdude.conf.in],
+		[sed $confsubst psocdude.conf.tmp > psocdude.conf],
 		[confsubst="$confsubst"])
 
 AC_OUTPUT
