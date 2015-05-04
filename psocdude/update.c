@@ -28,7 +28,7 @@
 #include "psocdude.h"
 #include "avr.h"
 #include "config.h"
-#include "confwin.h"
+//#include "confwin.h"
 #include "fileio.h"
 #include "update.h"
 

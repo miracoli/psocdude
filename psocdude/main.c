@@ -46,8 +46,6 @@
 
 #include "avr.h"
 #include "config.h"
-#include "confwin.h"
-#include "fileio.h"
 #include "lists.h"
 #include "pindefs.h"
 #include "term.h"
