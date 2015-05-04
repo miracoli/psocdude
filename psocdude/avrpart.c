@@ -604,38 +604,19 @@ void avr_display(FILE * f, AVRPART * p, const char * prefix, int verbose)
   AVRMEM * m;
 
   fprintf(f,
-          "%sAVR Part                      : %s\n"
-          "%sChip Erase delay              : %d us\n"
-          "%sPAGEL                         : P%02X\n"
-          "%sBS2                           : P%02X\n"
-          "%sRESET disposition             : %s\n"
-          "%sRETRY pulse                   : %s\n"
-          "%sserial program mode           : %s\n"
-          "%sparallel program mode         : %s\n"
-          "%sTimeout                       : %d\n"
-          "%sStabDelay                     : %d\n"
-          "%sCmdexeDelay                   : %d\n"
-          "%sSyncLoops                     : %d\n"
-          "%sByteDelay                     : %d\n"
-          "%sPollIndex                     : %d\n"
-          "%sPollValue                     : 0x%02x\n"
+          "%sPSoc device                   : %s\n"
+          "%sMulti bank                    : %s\n"
+          "%sTaget voltage                 : %s\n"
+          "%sProgramming mode              : %s\n"
+          "%sChecksum setup                : %s\n"
+          "%sProgram block                 : %s\n"
           "%sMemory Detail                 :\n\n",
           prefix, p->desc,
-          prefix, p->chip_erase_delay,
-          prefix, p->pagel,
-          prefix, p->bs2,
-          prefix, reset_disp_str(p->reset_disposition),
-          prefix, avr_pin_name(p->retry_pulse),
-          prefix, (p->flags & AVRPART_SERIALOK) ? "yes" : "no",
-          prefix, (p->flags & AVRPART_PARALLELOK) ?
-            ((p->flags & AVRPART_PSEUDOPARALLEL) ? "psuedo" : "yes") : "no",
-          prefix, p->timeout,
-          prefix, p->stabdelay,
-          prefix, p->cmdexedelay,
-          prefix, p->synchloops,
-          prefix, p->bytedelay,
-          prefix, p->pollindex,
-          prefix, p->pollvalue,
+          prefix, p->multi_bank ? "yes" : "no",
+          prefix, p->targ_voltage == TARGET_VOLTAGE_5V ? "5V" : "3.3V",
+          prefix, p->prog_mode == RESET_MODE ? "RESET_MODE" : "POWER_CYCLE_MODE",
+          prefix, p->chksm_setup == CHECKSUM_SETUP_21_23_27_TST110_TMG110 ? "CHECKSUM_SETUP_21_23_27_TST110_TMG110" : (CHECKSUM_SETUP_21_23_27_TST110_TMG110 ? "CHECKSUM_SETUP_21_23_27_TST110_TMG110" : "CHECKSUM_SETUP_24_24A"),
+          prefix, p->prgm_block == PROGRAM_BLOCK_21_22_23_24_28_29_TST_TMG_TMA ? "PROGRAM_BLOCK_21_22_23_24_28_29_TST_TMG_TMA" : "PROGRAM_BLOCK_27",
           prefix);
 
   px = prefix;
