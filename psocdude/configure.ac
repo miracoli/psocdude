@@ -456,8 +456,6 @@ esac
 AC_SUBST(WINDOWS_DIRS,$WINDOWS_DIRS)
 
 AC_CONFIG_FILES([
-       doc/Makefile
-       avrdude.spec
        Makefile
 ])
 
