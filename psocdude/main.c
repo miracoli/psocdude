@@ -69,8 +69,6 @@ struct list_walk_cookie
 
 static LISTID updates = NULL;
 
-static LISTID extended_params = NULL;
-
 static LISTID additional_config_files = NULL;
 
 static PROGRAMMER * pgm;
@@ -112,7 +110,6 @@ static void usage(void)
  "  -s                         Silent safemode operation, will not ask you if\n"
  "                             fuses should be changed back.\n"
  "  -E <exitspec>[,<exitspec>] List programmer exit specifications.\n"
- "  -x <extended_param>        Pass <extended_param> to programmer.\n"
  "  -y                         Count # erase cycles in EEPROM.\n"
  "  -Y <number>                Initialize erase cycle # in EEPROM.\n"
  "  -v                         Verbose output. -v -v for more.\n"
@@ -277,10 +274,6 @@ static void cleanup_main(void)
         ldestroy_cb(updates, (void(*)(void*))free_update);
         updates = NULL;
     }
-    if (extended_params) {
-        ldestroy(extended_params);
-        extended_params = NULL;
-    }
     if (additional_config_files) {
         ldestroy(additional_config_files);
         additional_config_files = NULL;
@@ -369,12 +362,6 @@ int main(int argc, char * argv [])
   updates = lcreat(NULL, 0);
   if (updates == NULL) {
     fprintf(stderr, "%s: cannot initialize updater list\n", progname);
-    exit(1);
-  }
-
-  extended_params = lcreat(NULL, 0);
-  if (extended_params == NULL) {
-    fprintf(stderr, "%s: cannot initialize extended parameter list\n", progname);
     exit(1);
   }
 
@@ -561,10 +548,6 @@ int main(int argc, char * argv [])
 
       case 'V':
         verify = 0;
-        break;
-
-      case 'x':
-        ladd(extended_params, optarg);
         break;
 
       case 'y':
@@ -759,22 +742,6 @@ int main(int argc, char * argv [])
   }
   if (pgm->teardown) {
     atexit(exithook);
-  }
-
-  if (lsize(extended_params) > 0) {
-    if (pgm->parseextparams == NULL) {
-      fprintf(stderr,
-              "%s: WARNING: Programmer doesn't support extended parameters,"
-              " -x option(s) ignored\n",
-              progname);
-    } else {
-      if (pgm->parseextparams(pgm, extended_params) < 0) {
-        fprintf(stderr,
-              "%s: Error parsing extended parameter list\n",
-              progname);
-        exit(1);
-      }
-    }
   }
 
   if (port == NULL) {
