@@ -775,11 +775,6 @@ int main(int argc, char * argv [])
   if (verbose) {
     fprintf(stderr, "%sUsing Port                    : %s\n", progbuf, port);
     fprintf(stderr, "%sUsing Programmer              : %s\n", progbuf, programmer);
-    if ((strcmp(pgm->type, "avr910") == 0)) {
-	  fprintf(stderr, "%savr910_devcode (avrdude.conf) : ", progbuf);
-      if(p->avr910_devcode)fprintf(stderr, "0x%x\n", p->avr910_devcode);
-	  else fprintf(stderr, "none\n");
-    }  
   }
 
   if (baudrate != 0) {
