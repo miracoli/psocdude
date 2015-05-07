@@ -96,7 +96,6 @@ static void usage(void)
  "  -C <config-file>           Specify location of configuration file.\n"
  "  -c <programmer>            Specify programmer type.\n"
  "  -D                         Disable auto erase for flash memory\n"
- "  -i <delay>                 ISP Clock Delay [in microseconds]\n"
  "  -P <port>                  Specify connection port.\n"
  "  -F                         Override invalid signature check.\n"
  "  -e                         Perform a chip erase.\n"
@@ -308,7 +307,6 @@ int main(int argc, char * argv [])
   char    usr_config[PATH_MAX]; /* per-user config file */
   char  * e;           /* for strtol() error checking */
   int     baudrate;    /* override default programmer baud rate */
-  int     ispdelay;    /* Specify the delay for ISP clock */
   int     safemode;    /* Enable safemode, 1=safemode on, 0=normal */
   int     silentsafe;  /* Don't ask about fuses, 1=silent, 0=normal */
   int     init_ok;     /* Device initialization worked well */
@@ -378,7 +376,6 @@ int main(int argc, char * argv [])
   programmer    = default_programmer;
   verbose       = 0;
   baudrate      = 0;
-  ispdelay      = 0;
   safemode      = 1;       /* Safemode on by default */
   silentsafe    = 0;       /* Ask by default */
   is_open       = 0;
@@ -433,15 +430,6 @@ int main(int argc, char * argv [])
         baudrate = strtol(optarg, &e, 0);
         if ((e == optarg) || (*e != 0)) {
           fprintf(stderr, "%s: invalid baud rate specified '%s'\n",
-                  progname, optarg);
-          exit(1);
-        }
-        break;
-
-      case 'i':	/* specify isp clock delay */
-	ispdelay = strtol(optarg, &e,10);
-	if ((e == optarg) || (*e != 0) || ispdelay == 0) {
-	  fprintf(stderr, "%s: invalid isp clock delay specified '%s'\n",
                   progname, optarg);
           exit(1);
         }
@@ -845,13 +833,6 @@ int main(int argc, char * argv [])
       fprintf(stderr, "%sOverriding Baud Rate          : %d\n", progbuf, baudrate);
     }
     pgm->baudrate = baudrate;
-  }
-
-  if (ispdelay != 0) {
-    if (verbose) {
-      fprintf(stderr, "%sSetting isp clock delay        : %3i\n", progbuf, ispdelay);
-    }
-    pgm->ispdelay = ispdelay;
   }
 
   rc = pgm->open(pgm, port);
