@@ -119,10 +119,8 @@ libavrdude_a_SOURCES = \
 	update.h \
 	update.c 
 
-avrdude_SOURCES = \
-	main.c \
-	term.c \
-	term.h
+psocdude_SOURCES = \
+	main.c 
 
 man_MANS = avrdude.1
 
