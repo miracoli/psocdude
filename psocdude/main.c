@@ -91,7 +91,6 @@ static void usage(void)
  "Options:\n"
  "  -p <partno>                Required. Specify AVR device.\n"
  "  -b <baudrate>              Override RS-232 baud rate.\n"
- "  -B <bitclock>              Specify JTAG/STK500v2 bit clock period (us).\n"
  "  -C <config-file>           Specify location of configuration file.\n"
  "  -c <programmer>            Specify programmer type.\n"
  "  -D                         Disable auto erase for flash memory\n"
@@ -307,7 +306,6 @@ int main(int argc, char * argv [])
   char    usr_config[PATH_MAX]; /* per-user config file */
   char  * e;           /* for strtol() error checking */
   int     baudrate;    /* override default programmer baud rate */
-  double  bitclock;    /* Specify programmer bit clock (JTAG ICE) */
   int     ispdelay;    /* Specify the delay for ISP clock */
   int     safemode;    /* Enable safemode, 1=safemode on, 0=normal */
   int     silentsafe;  /* Don't ask about fuses, 1=silent, 0=normal */
@@ -348,7 +346,6 @@ int main(int argc, char * argv [])
 
   default_parallel[0] = 0;
   default_serial[0]   = 0;
-  default_bitclock    = 0.0;
   default_safemode    = -1;
 
   init_config();
@@ -379,7 +376,6 @@ int main(int argc, char * argv [])
   programmer    = default_programmer;
   verbose       = 0;
   baudrate      = 0;
-  bitclock      = 0.0;
   ispdelay      = 0;
   safemode      = 1;       /* Safemode on by default */
   silentsafe    = 0;       /* Ask by default */
@@ -435,15 +431,6 @@ int main(int argc, char * argv [])
         baudrate = strtol(optarg, &e, 0);
         if ((e == optarg) || (*e != 0)) {
           fprintf(stderr, "%s: invalid baud rate specified '%s'\n",
-                  progname, optarg);
-          exit(1);
-        }
-        break;
-
-      case 'B':	/* specify JTAG ICE bit clock period */
-	bitclock = strtod(optarg, &e);
-	if ((e == optarg) || (*e != 0) || bitclock == 0.0) {
-	  fprintf(stderr, "%s: invalid bit clock period specified '%s'\n",
                   progname, optarg);
           exit(1);
         }
@@ -650,10 +637,6 @@ int main(int argc, char * argv [])
     }
   }
 
-  // set bitclock from configuration files unless changed by command line
-  if (default_bitclock > 0 && bitclock == 0.0) {
-    bitclock = default_bitclock;
-  }
 
   if (verbose) {
     fprintf(stderr, "\n");
@@ -860,13 +843,6 @@ int main(int argc, char * argv [])
       fprintf(stderr, "%sOverriding Baud Rate          : %d\n", progbuf, baudrate);
     }
     pgm->baudrate = baudrate;
-  }
-
-  if (bitclock != 0.0) {
-    if (verbose) {
-      fprintf(stderr, "%sSetting bit clk period        : %.1f\n", progbuf, bitclock);
-    }
-    pgm->bitclock = bitclock * 1e-6;
   }
 
   if (ispdelay != 0) {
