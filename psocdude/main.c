@@ -109,8 +109,6 @@ static void usage(void)
  "  -s                         Silent safemode operation, will not ask you if\n"
  "                             fuses should be changed back.\n"
  "  -E <exitspec>[,<exitspec>] List programmer exit specifications.\n"
- "  -y                         Count # erase cycles in EEPROM.\n"
- "  -Y <number>                Initialize erase cycle # in EEPROM.\n"
  "  -v                         Verbose output. -v -v for more.\n"
  "  -q                         Quell progress output. -q -q for less.\n"
  "  -l logfile                 Use logfile rather than stderr for diagnostics.\n"
@@ -542,16 +540,6 @@ int main(int argc, char * argv [])
 
       case 'V':
         verify = 0;
-        break;
-
-      case 'y':
-        fprintf(stderr, "%s: erase cycle counter no longer supported\n",
-                progname);
-        break;
-
-      case 'Y':
-        fprintf(stderr, "%s: erase cycle counter no longer supported\n",
-                progname);
         break;
 
       case '?': /* help */
