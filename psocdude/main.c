@@ -50,7 +50,6 @@
 #include "fileio.h"
 #include "lists.h"
 #include "pindefs.h"
-#include "term.h"
 #include "safemode.h"
 #include "update.h"
 #include "pgm_type.h"
@@ -114,7 +113,6 @@ static void usage(void)
  "  -u                         Disable safemode, default when running from a script.\n"
  "  -s                         Silent safemode operation, will not ask you if\n"
  "                             fuses should be changed back.\n"
- "  -t                         Enter terminal mode.\n"
  "  -E <exitspec>[,<exitspec>] List programmer exit specifications.\n"
  "  -x <extended_param>        Pass <extended_param> to programmer.\n"
  "  -y                         Count # erase cycles in EEPROM.\n"
@@ -314,7 +312,6 @@ int main(int argc, char * argv [])
   int     erase;       /* 1=erase chip, 0=don't */
   int     calibrate;   /* 1=calibrate RC oscillator, 0=don't */
   char  * port;        /* device port (/dev/xxx) */
-  int     terminal;    /* 1=enter terminal mode, 0=don't */
   int     verify;      /* perform a verify operation */
   char  * exitspecs;   /* exit specs string from command line */
   char  * programmer;  /* programmer id */
@@ -395,7 +392,6 @@ int main(int argc, char * argv [])
   calibrate     = 0;
   p             = NULL;
   ovsigck       = 0;
-  terminal      = 0;
   verify        = 1;        /* on by default */
   quell_progress = 0;
   exitspecs     = NULL;
@@ -539,10 +535,6 @@ int main(int argc, char * argv [])
       case 's' : /* Silent safemode */
         silentsafe = 1;
         safemode = 1;
-        break;
-        
-      case 't': /* enter terminal mode */
-        terminal = 1;
         break;
 
       case 'u' : /* Disable safemode */
@@ -1192,12 +1184,6 @@ int main(int argc, char * argv [])
     }
   }
 
-  if (terminal) {
-    /*
-     * terminal mode
-     */
-    exitrc = terminal_mode(pgm, p);
-  }
 
   if (!init_ok) {
     /*
