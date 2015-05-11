@@ -1,6 +1,9 @@
 #
-# avrdude - A Downloader/Uploader for AVR device programmers
-# Copyright (C) 2003, 2004  Theodore A. Roth  <troth@openavr.org>
+# psocdude - A Downloader/Uploader for PSoC device programmers
+# Copyright (C) 2015  Dirk Petrautzki <dirk@dirk-petrautzki.de>
+# 
+# Derived from avrdude code which is under copyright 
+# of the respective programmer (see AUTHORS_AVRDUDE)
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -32,8 +35,8 @@ EXTRA_DIST   = \
 	ChangeLog-2010 \
 	ChangeLog-2011 \
 	ChangeLog-2012 \
-	avrdude.1 \
-	avrdude.spec \
+	psocdude.1 \
+	psocdude.spec \
 	bootstrap
 
 CLEANFILES = \
@@ -48,26 +51,26 @@ BUILT_SOURCES = $(CLEANFILES)
 
 # . lets build this directory before the following in SUBDIRS
 SUBDIRS = .
-# doc comes here, and we want to use the built avrdude to generate the parts list
+# doc comes here, and we want to use the built psocdude to generate the parts list
 SUBDIRS += @SUBDIRS_AC@
 SUBDIRS += @WINDOWS_DIRS@
 DIST_SUBDIRS = @DIST_SUBDIRS_AC@
 
 AM_YFLAGS    = -d
 
-avrdude_CPPFLAGS = -DCONFIG_DIR=\"$(sysconfdir)\"
+psocdude_CPPFLAGS = -DCONFIG_DIR=\"$(sysconfdir)\"
 
-libavrdude_a_CPPFLAGS = -DCONFIG_DIR=\"$(sysconfdir)\"
+libpsocdude_a_CPPFLAGS = -DCONFIG_DIR=\"$(sysconfdir)\"
 
-avrdude_CFLAGS   = @ENABLE_WARNINGS@
+psocdude_CFLAGS   = @ENABLE_WARNINGS@
 
-libavrdude_a_CFLAGS   = @ENABLE_WARNINGS@
+libpsocdude_a_CFLAGS   = @ENABLE_WARNINGS@
 
-avrdude_LDADD  = $(top_builddir)/$(noinst_LIBRARIES) @LIBUSB_1_0@ @LIBUSB@ @LIBFTDI1@ @LIBFTDI@ @LIBHID@ @LIBELF@ @LIBPTHREAD@ -lm
+psocdude_LDADD  = $(top_builddir)/$(noinst_LIBRARIES) @LIBUSB_1_0@ @LIBUSB@ @LIBFTDI1@ @LIBFTDI@ @LIBHID@ @LIBELF@ @LIBPTHREAD@ -lm
 
-bin_PROGRAMS = avrdude
+bin_PROGRAMS = psocdude
 
-noinst_LIBRARIES = libavrdude.a
+noinst_LIBRARIES = libpsocdude.a
 
 # automake thinks these generated files should be in the distribution,
 # but this might cause trouble for some users, so we rather don't want
@@ -84,7 +87,7 @@ dist-hook:
 	$(distdir)/config_gram.c \
 	$(distdir)/config_gram.h
 
-libavrdude_a_SOURCES = \
+libpsocdude_a_SOURCES = \
 	config_gram.y \
 	lexer.l \
 	arduino.h \
@@ -122,19 +125,19 @@ libavrdude_a_SOURCES = \
 psocdude_SOURCES = \
 	main.c 
 
-man_MANS = avrdude.1
+#man_MANS = psocdude.1
 
-sysconf_DATA = avrdude.conf
+sysconf_DATA = psocdude.conf
 
-install-exec-local: backup-avrdude-conf
+install-exec-local: backup-psocdude-conf
 
 distclean-local:
-	rm -f avrdude.conf
+	rm -f psocdude.conf
 
 # This will get run before the config file is installed.
-backup-avrdude-conf:
-	@echo "Backing up avrdude.conf in ${DESTDIR}${sysconfdir}"
-	@if test -e ${DESTDIR}${sysconfdir}/avrdude.conf; then \
-		cp -pR ${DESTDIR}${sysconfdir}/avrdude.conf \
-			${DESTDIR}${sysconfdir}/avrdude.conf.bak; \
+backup-psocdude-conf:
+	@echo "Backing up psocdude.conf in ${DESTDIR}${sysconfdir}"
+	@if test -e ${DESTDIR}${sysconfdir}/psocdude.conf; then \
+		cp -pR ${DESTDIR}${sysconfdir}/psocdude.conf \
+			${DESTDIR}${sysconfdir}/psocdude.conf.bak; \
 	fi
