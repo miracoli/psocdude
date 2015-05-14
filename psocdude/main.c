@@ -109,7 +109,7 @@ static void usage(void)
  "  -q                         Quell progress output. -q -q for less.\n"
  "  -l logfile                 Use logfile rather than stderr for diagnostics.\n"
  "  -?                         Display this usage.\n"
- "\navrdude version %s, URL: <http://savannah.nongnu.org/projects/avrdude/>\n"
+ "\npsocdude version %s, URL: <https://github.com/miracoli/psocdude>\n"
           ,progname, version);
 }
 
@@ -532,8 +532,8 @@ int main(int argc, char * argv [])
      */
     fprintf(stderr,
             "\n%s: Version %s, compiled on %s at %s\n"
-            "%sCopyright (c) 2000-2005 Brian Dean, http://www.bdmicro.com/\n"
-	    "%sCopyright (c) 2007-2009 Joerg Wunsch\n\n",
+            "%sCopyright (c) 2015 Dirk Petrautzki\n"
+	    "%sBased on AVRDude 6.0.1\n\n",
             progname, version, __DATE__, __TIME__, progbuf, progbuf);
   }
 
