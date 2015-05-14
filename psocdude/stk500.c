@@ -1135,43 +1135,7 @@ static void stk500_print_parms1(PROGRAMMER * pgm, const char * p)
   unsigned vtarget, vadjust, osc_pscale, osc_cmatch, sck_duration;
 
   stk500_getparm(pgm, Parm_STK_VTARGET, &vtarget);
-  stk500_getparm(pgm, Parm_STK_VADJUST, &vadjust);
-  stk500_getparm(pgm, Parm_STK_OSC_PSCALE, &osc_pscale);
-  stk500_getparm(pgm, Parm_STK_OSC_CMATCH, &osc_cmatch);
-  stk500_getparm(pgm, Parm_STK_SCK_DURATION, &sck_duration);
-
   fprintf(stderr, "%sVtarget         : %.1f V\n", p, vtarget / 10.0);
-  fprintf(stderr, "%sVaref           : %.1f V\n", p, vadjust / 10.0);
-  fprintf(stderr, "%sOscillator      : ", p);
-  if (osc_pscale == 0)
-    fprintf(stderr, "Off\n");
-  else {
-    int prescale = 1;
-    double f = STK500_XTAL / 2;
-    const char *unit;
-
-    switch (osc_pscale) {
-      case 2: prescale = 8; break;
-      case 3: prescale = 32; break;
-      case 4: prescale = 64; break;
-      case 5: prescale = 128; break;
-      case 6: prescale = 256; break;
-      case 7: prescale = 1024; break;
-    }
-    f /= prescale;
-    f /= (osc_cmatch + 1);
-    if (f > 1e6) {
-      f /= 1e6;
-      unit = "MHz";
-    } else if (f > 1e3) {
-      f /= 1000;
-      unit = "kHz";
-    } else
-      unit = "Hz";
-    fprintf(stderr, "%.3f %s\n", f, unit);
-  }
-  fprintf(stderr, "%sSCK period      : %.1f us\n", p, 
-	  sck_duration * 8.0e6 / STK500_XTAL + 0.05);
 
   return;
 }
