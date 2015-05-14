@@ -105,7 +105,6 @@ static void usage(void)
  "                             is performed in the order specified.\n"
  "  -n                         Do not write anything to the device.\n"
  "  -V                         Do not verify.\n"
- "  -E <exitspec>[,<exitspec>] List programmer exit specifications.\n"
  "  -v                         Verbose output. -v -v for more.\n"
  "  -q                         Quell progress output. -q -q for less.\n"
  "  -l logfile                 Use logfile rather than stderr for diagnostics.\n"
@@ -297,7 +296,6 @@ int main(int argc, char * argv [])
   int     erase;       /* 1=erase chip, 0=don't */
   char  * port;        /* device port (/dev/xxx) */
   int     verify;      /* perform a verify operation */
-  char  * exitspecs;   /* exit specs string from command line */
   char  * programmer;  /* programmer id */
   char  * partdesc;    /* part id */
   char    sys_config[PATH_MAX]; /* system wide config file */
@@ -357,7 +355,6 @@ int main(int argc, char * argv [])
   ovsigck       = 0;
   verify        = 1;        /* on by default */
   quell_progress = 0;
-  exitspecs     = NULL;
   pgm           = NULL;
   programmer    = default_programmer;
   verbose       = 0;
@@ -439,10 +436,6 @@ int main(int argc, char * argv [])
       case 'e': /* perform a chip erase */
         erase = 1;
         uflags &= ~UF_AUTO_ERASE;
-        break;
-
-      case 'E':
-        exitspecs = optarg;
         break;
 
       case 'F': /* override invalid signature check */
@@ -713,21 +706,6 @@ int main(int argc, char * argv [])
     fprintf(stderr, "\n");
     exit(1);
   }
-
-
-  if (exitspecs != NULL) {
-    if (pgm->parseexitspecs == NULL) {
-      fprintf(stderr,
-              "%s: WARNING: -E option not supported by this programmer type\n",
-              progname);
-      exitspecs = NULL;
-    }
-    else if (pgm->parseexitspecs(pgm, exitspecs) < 0) {
-      usage();
-      exit(1);
-    }
-  }
-
 
   if (avr_initmem(p) != 0)
   {
