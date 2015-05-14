@@ -468,96 +468,15 @@ static int stk500_initialize(PROGRAMMER * pgm, AVRPART * p)
    */
   buf[0] = Cmnd_STK_SET_DEVICE;
 
-  buf[1] = p->stk500_devcode;
-  buf[2] = 0; /* device revision */
+  buf[1] = p->prog_mode;
+  buf[2] = p->targ_voltage;
+  buf[3] = p->chksm_setup;
+  buf[4] = p->prgm_block;
+  buf[5] = p->multi_bank;
 
-  if ((p->flags & AVRPART_SERIALOK) && (p->flags & AVRPART_PARALLELOK))
-    buf[3] = 0; /* device supports parallel and serial programming */
-  else
-    buf[3] = 1; /* device supports parallel only */
+  buf[6] = Sync_CRC_EOP;
 
-  if (p->flags & AVRPART_PARALLELOK) {
-    if (p->flags & AVRPART_PSEUDOPARALLEL) {
-      buf[4] = 0; /* pseudo parallel interface */
-      n_extparms = 0;
-    }
-    else {
-      buf[4] = 1; /* full parallel interface */
-    }
-  }
-
-#if 0
-  fprintf(stderr, "%s: stk500_initialize(): n_extparms = %d\n", 
-          progname, n_extparms);
-#endif
-    
-  buf[5] = 1; /* polling supported - XXX need this in config file */
-  buf[6] = 1; /* programming is self-timed - XXX need in config file */
-
-  m = avr_locate_mem(p, "lock");
-  if (m)
-    buf[7] = m->size;
-  else
-    buf[7] = 0;
-
-  /*
-   * number of fuse bytes
-   */
-  buf[8] = 0;
-  m = avr_locate_mem(p, "fuse");
-  if (m)
-    buf[8] += m->size;
-  m = avr_locate_mem(p, "lfuse");
-  if (m)
-    buf[8] += m->size;
-  m = avr_locate_mem(p, "hfuse");
-  if (m)
-    buf[8] += m->size;
-  m = avr_locate_mem(p, "efuse");
-  if (m)
-    buf[8] += m->size;
-
-  m = avr_locate_mem(p, "flash");
-  if (m) {
-    buf[9] = m->readback[0];
-    buf[10] = m->readback[1];
-    if (m->paged) {
-      buf[13] = (m->page_size >> 8) & 0x00ff;
-      buf[14] = m->page_size & 0x00ff;
-    }
-    buf[17] = (m->size >> 24) & 0xff;
-    buf[18] = (m->size >> 16) & 0xff;
-    buf[19] = (m->size >> 8) & 0xff;
-    buf[20] = m->size & 0xff;
-  }
-  else {
-    buf[9]  = 0xff;
-    buf[10]  = 0xff;
-    buf[13] = 0;
-    buf[14] = 0;
-    buf[17] = 0;
-    buf[18] = 0;
-    buf[19] = 0;
-    buf[20] = 0;
-  }
-
-  m = avr_locate_mem(p, "eeprom");
-  if (m) {
-    buf[11] = m->readback[0];
-    buf[12] = m->readback[1];
-    buf[15] = (m->size >> 8) & 0x00ff;
-    buf[16] = m->size & 0x00ff;
-  }
-  else {
-    buf[11] = 0xff;
-    buf[12] = 0xff;
-    buf[15] = 0;
-    buf[16] = 0;
-  }
-
-  buf[21] = Sync_CRC_EOP;
-
-  stk500_send(pgm, buf, 22);
+  stk500_send(pgm, buf, 7);
   if (stk500_recv(pgm, buf, 1) < 0)
     exit(1);
   if (buf[0] == Resp_STK_NOSYNC) {
@@ -586,45 +505,6 @@ static int stk500_initialize(PROGRAMMER * pgm, AVRPART * p)
             "expect=0x%02x, resp=0x%02x\n", 
             progname, Resp_STK_OK, buf[0]);
     return -1;
-  }
-
-  if (n_extparms) {
-    if ((p->pagel == 0) || (p->bs2 == 0)) {
-      if (verbose > 1)
-          fprintf(stderr,
-                  "%s: PAGEL and BS2 signals not defined in the configuration "
-                  "file for part %s, using dummy values\n",
-                  progname, p->desc);
-      buf[2] = 0xD7;            /* they look somehow possible, */
-      buf[3] = 0xA0;            /* don't they? ;) */
-    }
-    else {
-      buf[2] = p->pagel;
-      buf[3] = p->bs2;
-    }
-    buf[0] = n_extparms+1;
-
-    /*
-     * m is currently pointing to eeprom memory if the part has it
-     */
-    if (m)
-      buf[1] = m->page_size;
-    else
-      buf[1] = 0;
-
-
-    if (n_extparms == 4) {
-      if (p->reset_disposition == RESET_DEDICATED)
-        buf[4] = 0;
-      else
-        buf[4] = 1;
-    }
-
-    rc = stk500_set_extended_parms(pgm, n_extparms+1, buf);
-    if (rc) {
-      fprintf(stderr, "%s: stk500_initialize(): failed\n", progname);
-      exit(1);
-    }
   }
 
   return pgm->program_enable(pgm, p);
