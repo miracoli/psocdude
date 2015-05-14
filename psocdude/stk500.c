@@ -174,35 +174,61 @@ static int stk500_cmd(PROGRAMMER * pgm, const unsigned char *cmd,
  */
 static int stk500_chip_erase(PROGRAMMER * pgm, AVRPART * p)
 {
-  unsigned char cmd[4];
-  unsigned char res[4];
+  unsigned char buf[16];
+  int tries=0;
 
-  if (pgm->cmd == NULL) {
+ retry:
+  
+  tries++;
+
+  buf[0] = Cmnd_STK_CHIP_ERASE;
+  buf[1] = Sync_CRC_EOP;
+
+  stk500_send(pgm, buf, 2);
+  if (stk500_recv(pgm, buf, 1) < 0)
+    exit(1);
+  if (buf[0] == Resp_STK_NOSYNC) {
+    if (tries > 33) {
+      fprintf(stderr, "%s: stk500_chip_erase(): can't get into sync\n",
+              progname);
+      return -1;
+    }
+    if (stk500_getsync(pgm) < 0)
+      return -1;
+    goto retry;
+  }
+  else if (buf[0] != Resp_STK_INSYNC) {
     fprintf(stderr,
-	    "%s: Error: %s programmer uses stk500_chip_erase() but does not\n"
-	    "provide a cmd() method.\n",
-	    progname, pgm->type);
+            "%s: stk500_chip_erase(): protocol error, "
+            "expect=0x%02x, resp=0x%02x\n", 
+            progname, Resp_STK_INSYNC, buf[0]);
     return -1;
   }
 
-  if (p->op[AVR_OP_CHIP_ERASE] == NULL) {
-    fprintf(stderr, "chip erase instruction not defined for part \"%s\"\n",
-            p->desc);
+  if (stk500_recv(pgm, buf, 1) < 0)
+    exit(1);
+  if (buf[0] == Resp_STK_OK) {
+    return 0;
+  }
+  else if (buf[0] == Resp_STK_NODEVICE) {
+    fprintf(stderr, "%s: stk500_chip_erase(): no device\n",
+            progname);
     return -1;
   }
 
-  pgm->pgm_led(pgm, ON);
+  if(buf[0] == Resp_STK_FAILED)
+  {
+      fprintf(stderr, 
+        "%s: stk500_chip_erase(): failed to erase chip\n", 
+      progname);
+    return -1;
+  }
 
-  memset(cmd, 0, sizeof(cmd));
 
-  avr_set_bits(p->op[AVR_OP_CHIP_ERASE], cmd);
-  pgm->cmd(pgm, cmd, res);
-  usleep(p->chip_erase_delay);
-  pgm->initialize(pgm, p);
+  fprintf(stderr, "%s: stk500_chip_erase(): unknown response=0x%02x\n",
+          progname, buf[0]);
 
-  pgm->pgm_led(pgm, OFF);
-
-  return 0;
+  return -1;
 }
 
 /*
