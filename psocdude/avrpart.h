@@ -218,6 +218,7 @@ typedef struct avrmem {
   unsigned char * buf;        /* pointer to memory buffer */
   unsigned char * tags;       /* allocation tags */
   OPCODE * op[AVR_OP_MAX];    /* opcodes */
+  unsigned short checksum;
 } AVRMEM;
 
 #ifdef __cplusplus

@@ -327,6 +327,20 @@ static int ihex2b(char * infile, FILE * inf,
           return -1;
         }
         nextaddr = ihex.loadofs + baseaddr - fileoffset;
+        if (nextaddr >= 0x100000) {
+          /* For PSoC microcontroller
+          HEX files, the extended linear address 0x100000 is used to offset
+          Flash protection data from the Flash data. */
+          break;
+        }
+        if (nextaddr == 0x200000) {
+          /* This is a two-byte data record that stores a checksum for
+          all of the Flash data stored in the HEX file. */
+          mem->checksum = (ihex.data[0] << 8 | ihex.data[1]);
+          fprintf(stderr, "%s: Checksum at line %d of \"%s\": 0x%x\n",
+              progname, lineno, infile, mem->checksum);
+          break;
+        }
         if (nextaddr + ihex.reclen > bufsize) {
           fprintf(stderr, 
                   "%s: ERROR: address 0x%04x out of range at line %d of %s\n",
